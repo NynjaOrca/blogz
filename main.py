@@ -48,8 +48,9 @@ class User(db.Model):
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
-    entry_owner = User.query.filter_by(email=session['email']).first()
-
+    if session:
+        entry_owner = User.query.filter_by(email=session['email']).first()
+        personal_entries = Entry.query.filter_by(owner=entry_owner).all()
     if request.method == 'POST':
         entry_title = request.form['title']
         entry_body = request.form['body']
@@ -68,7 +69,6 @@ def index():
             db.session.commit()
 
     entries = Entry.query.filter_by().all()
-    personal_entries = Entry.query.filter_by(owner=entry_owner).all()
     return render_template('home.html', title="Blogz", entries=entries)
 
 # -------------------------------------------------------------------------------
@@ -198,22 +198,8 @@ def single_page():
 
     
     entry_id = request.args.get('entryID')
-    print(entry_id)
-    print(entry_id)
-    print(entry_id)
-    print(entry_id)
     author = request.args.get('user')
-    print(author)
-    print(author)
-    print(author)
-    print(author)
-    print(author)
     entry = Entry.query.filter_by(id=entry_id).first()
-    print(entry)
-    print(entry)
-    print(entry)
-    print(entry)
-    print(entry)
     return render_template('post-page.html', entry=entry, author=author)
 
 # -------------------------------------------------------------------------------
@@ -242,7 +228,7 @@ def post_entry():
 @app.before_request
 def require_login():
     print(session)
-    allowed_routes = ['register', 'login', 'home']
+    allowed_routes = ['register', 'login', 'index']
     if request.endpoint not in allowed_routes and 'email' not in session:
         return redirect('/login')
 

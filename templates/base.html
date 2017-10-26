@@ -45,6 +45,9 @@
                 padding-right: 100px;}
             .link{
                 color: rebeccapurple;}
+            .visited{
+                color:aquamarine;
+            }
             .newpost{
                 text-align: center;
             }
@@ -53,12 +56,12 @@
         <title>{{ title }}</title>
     </head>
     <body class="body">
-        <div style="display:inline-block;">
+        <div class="link" style="display:inline-block;">
                 <a href="/">Home</a>
-                {% if email,param in session %}
+                {% if session['email'] %}
                     <a href="/logout">Logout</a>
                     <a href="/post-entry">Make A Post</a>
-                {% elif email,param not in session%}
+                {% else %}
                     <a href="/login">Login</a>
                 {% endif %}
         </div>
