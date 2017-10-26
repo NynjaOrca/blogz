@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="head">Create a Post!</h1>
+
+<form action="/" method="post">
+    <div style="text-align: center;">
+        <h3 class="title">Title:</h3>
+        <input type="text" name="title" />
+    </div>
+
+<br><br>
+
+    <div class="newpost">
+        <h3 class="title">Body:</h3>
+        <textarea rows="10" cols="50" type="text" name="body"></textarea>
+        <br>
+        <input type="submit" value="Post!" />
+
+    </div>
+
+
+</form>
+
+
+{% endblock %}

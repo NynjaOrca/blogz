@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="head">{{ author.username }}'s Blog Posts!</h1>
+
+<form method="post">
+{% for entry in entries %}
+    <div class="blogpost">
+        <h3><a href="/post-page?entryID={{ entry.id }}&user={{ author.username }}">{{ entry.title }}</a>
+            &nbsp;&nbsp;&nbsp;&nbsp; {{ entry.date }} - {{ entry.time }}</h3>
+        <p>{{ entry.body }}</p>
+    </div>
+{% endfor %}
+</form>
+
+{% endblock %}

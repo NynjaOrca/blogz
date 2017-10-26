@@ -11,19 +11,44 @@
                 font-size: 16px; 
                 font-style: normal; }
             .blogpost {
-                color: grey;
+                color: darkslategrey;
                 text-align: center;
-                font-size: 16px;}
+                vertical-align: middle;
+                word-wrap: break-word;
+                font-size: 16px;
+                padding-left: 100px;
+                padding-right: 100px;}
             .body {
                 background-color:darkgray;
                 border-color: cadetblue;}
             .head {
-                color: lemonchiffon;
+                color: darkslategray;
                 background-color: darkgrey;
                 border-color: cadetblue;
                 text-align: center;
+                vertical-align: middle;
                 height: 100px;
+                border-style: solid;
+                border-width: 3px;
+                border-color: lightslategray;
+                padding-left: 100px;
+                padding-right: 100px;}
+            .title {
+                color: darkslategrey;
+                background-color: darkgrey;
+                border-color: cadetblue;
+                text-align: center;
+                vertical-align: middle;
+                height: 20px;
+                text-decoration: underline;
+                padding-left: 100px;
+                padding-right: 100px;}
+            .link{
+                color: rebeccapurple;}
+            .newpost{
+                text-align: center;
             }
+            
         </style>
         <title>{{ title }}</title>
     </head>
@@ -32,7 +57,8 @@
                 <a href="/">Home</a>
                 {% if email,param in session %}
                     <a href="/logout">Logout</a>
-                {% else %}
+                    <a href="/post-entry">Make A Post</a>
+                {% elif email,param not in session%}
                     <a href="/login">Login</a>
                 {% endif %}
         </div>

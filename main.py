@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash, make_response
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -16,12 +17,16 @@ class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(500))
+    date = db.Column(db.String(120))
+    time = db.Column(db.String(120))
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, body, owner):
+    def __init__(self, title, body, owner, date, time):
         self.title = title
         self.body = body    
         self.owner = owner
+        self.date = date
+        self.time = time
 
 # -------------------------------------------------------------------------------
 
@@ -48,11 +53,17 @@ def index():
     if request.method == 'POST':
         entry_title = request.form['title']
         entry_body = request.form['body']
+        if datetime.today().hour > 12:
+            tag = 'PM'
+        else:
+            tag = 'AM'
+        entry_date = str(datetime.today().year) + "/" + str(datetime.today().month) + "/" + str(datetime.today().day)
+        entry_time = str(datetime.today().hour % 12) + ":" + str(datetime.today().minute) + ":" + str(datetime.today().second) + ' ' + tag
         if not entry_title or not entry_body:
             flash("Your post must include both a title and body", 'error')
             return redirect('/')
         else:
-            new_entry = Entry(entry_title, entry_body, entry_owner)
+            new_entry = Entry(entry_title, entry_body, entry_owner, entry_date, entry_time)
             db.session.add(new_entry)
             db.session.commit()
 
@@ -171,27 +182,60 @@ def logout():
 
 # -------------------------------------------------------------------------------
 
-@app.route('/delete-entry', methods=['POST'])
-def delete_entry():
+@app.route('/user-page', methods=['POST','GET'])
+def user_page():
 
-    entry_id = int(request.form['entry-id'])
-    entry = Entry.query.get(entry_id)
-    db.session.delete(entry)
-    db.session.commit()
-
-    return redirect('/')
+    
+    user_id = int(request.args.get('user'))
+    author = User.query.filter_by(id=user_id).first()
+    entries = Entry.query.filter_by(owner_id=user_id).all()
+    return render_template('user-page.html', entries=entries, author=author)
 
 # -------------------------------------------------------------------------------
 
-@app.route('/complete-entry', methods=['POST'])
-def complete_entry():
+@app.route('/post-page', methods=['POST','GET'])
+def single_page():
 
-    entry_id = int(request.form['entry-id'])
-    entry = Entry.query.get(entry_id)
-    db.session.add(entry)
-    db.session.commit()
+    
+    entry_id = request.args.get('entryID')
+    print(entry_id)
+    print(entry_id)
+    print(entry_id)
+    print(entry_id)
+    author = request.args.get('user')
+    print(author)
+    print(author)
+    print(author)
+    print(author)
+    print(author)
+    entry = Entry.query.filter_by(id=entry_id).first()
+    print(entry)
+    print(entry)
+    print(entry)
+    print(entry)
+    print(entry)
+    return render_template('post-page.html', entry=entry, author=author)
 
-    return redirect('/')
+# -------------------------------------------------------------------------------
+
+@app.route('/post-entry', methods=['POST', 'GET'])
+def post_entry():
+
+    entry_owner = User.query.filter_by(email=session['email']).first()
+
+    if request.method == 'POST':
+        entry_title = request.form['title']
+        entry_body = request.form['body']
+        if not entry_title or not entry_body:
+            flash("Your post must include both a title and body", 'error')
+            return redirect('/')
+        else:
+            new_entry = Entry(entry_title, entry_body, entry_owner)
+            db.session.add(new_entry)
+            db.session.commit()
+
+
+    return render_template('post-entry.html')
 
 # -------------------------------------------------------------------------------
 

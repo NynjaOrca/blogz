@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="head">
+    <h1>{{ entry.title }}</h1>
+    <div style="display:inline-block;">
+        <span>By: {{ author }} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <span>{{entry.date}} {{ entry.time }}</span>
+    </div>
+</div>
+
+<div class="blogpost">
+    <h3>{{ entry.body }}</h3>
+</div>
+
+
+
+{% endblock %}
