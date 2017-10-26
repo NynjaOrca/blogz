@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>Registration Form</h4>
+        <form action="/register" method='post'>
+        <table>
+
+            <tr>
+                <td>
+                    <label for="username">Username</label>
+                </td>
+                <td>
+                    <input type="text" name="username" />
+                </td>
+            </tr>
+
+            <br>
+
+            <tr>
+                <td>
+                    <label for="email">Email</label>
+                </td>
+                <td>
+                    <input type="email" name="email" />
+                </td>
+                <td class="error">
+                    {{email_error}}
+                </td> 
+            </tr>
+
+            <br>
+
+            <tr>
+                <td>
+                    <label for="password">Password</label>
+                </td>
+                <td>
+                    <input type="password" name="password" />
+                </td>  
+                <td class="error">
+                    {{password_error}}
+                </td> 
+            </tr>
+
+            <br>
+
+            <tr>
+                <td>
+                    <label for="verify">Verify</label>
+                </td>
+                <td>
+                    <input type="password" name="verify" />
+                </td> 
+                <td class="error">
+                    {{verify_error}}
+                </td>  
+            </tr>
+
+        </table>
+            <input type="submit" value="Register" />
+        
+        </form>
+{% endblock %}

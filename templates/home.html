@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="head">Welcome to Blogz</h1>
+
+    {% if entries|length == 0 %}
+        <p>No posts have been made yet.</p>
+    {% else %}
+    <div class="blogpost">
+        {% for entry in entries: %}
+            <h3>{{ entry.title }}</h3>
+                <form method="POST">
+                    <input type="hidden" name="entry-id" value="{{entry.id}}" />
+                    <p>{{ entry.body }}</p>
+                </form>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <hr>
+
+<!--
+
+    <h2>Completed Tasks</h2>
+
+    <ul>
+    {% for task in completed_tasks: %}
+        <li>
+            <form method="POST" action="/delete-task">
+                <input type="hidden" name="task-id" value="{{task.id}}" />
+                <input type="submit" value="CLEAR!" />
+                <b>{{ task.name }}:</b><p>{{ task.desc }}</p>
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+
+-->
+
+{% endblock %}
